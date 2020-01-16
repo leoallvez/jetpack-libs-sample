@@ -8,7 +8,7 @@ import com.devtides.dogs.R
 import com.devtides.dogs.model.DogBreed
 import kotlinx.android.synthetic.main.item_dog.view.*
 
-class DogsListAdapter(val dogsList: ArrayList<DogBreed>) : RecyclerView.Adapter<DogsListAdapter.DogViewHolder>(){
+class DogsListAdapter(var dogsList: ArrayList<DogBreed>) : RecyclerView.Adapter<DogsListAdapter.DogViewHolder>(){
 
     fun updateDogList(newDogsList: List<DogBreed>) {
         dogsList.clear()
