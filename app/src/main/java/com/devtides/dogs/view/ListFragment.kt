@@ -32,15 +32,15 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        //get view model
         viewModel = ViewModelProviders.of(this).get(ListViewModel::class.java)
         viewModel.refresh()
-
+        //set UI
         dogs_list.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = dogsListAdapter
         }
-
+        //
         observeViewModel()
     }
 
