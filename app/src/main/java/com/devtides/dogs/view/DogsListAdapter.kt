@@ -3,6 +3,7 @@ package com.devtides.dogs.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.devtides.dogs.R
 import com.devtides.dogs.model.DogBreed
@@ -28,6 +29,9 @@ class DogsListAdapter(var dogsList: ArrayList<DogBreed>) : RecyclerView.Adapter<
         val dog = dogsList[position]
         view.name.text = dog.dogBreed
         view.lifespan.text = dog.lifeSpan
+        view.setOnClickListener{
+            Navigation.findNavController(it).navigate(ListFragmentDirections.actionDetailFragmengt())
+        }
     }
 
     class DogViewHolder(var view: View) : RecyclerView.ViewHolder(view)
