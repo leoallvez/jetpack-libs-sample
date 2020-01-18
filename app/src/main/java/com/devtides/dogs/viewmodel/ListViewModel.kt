@@ -4,91 +4,49 @@ package com.devtides.dogs.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.devtides.dogs.model.DogBreed
+import com.devtides.dogs.model.DogsApiService
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
 
 class ListViewModel : ViewModel() {
 
+    private val dogsService = DogsApiService()
+    private val disposable = CompositeDisposable()
+
     val dogs = MutableLiveData<List<DogBreed>>()
-    val dogsLoadError  = MutableLiveData<Boolean>()
+    val dogsLoadError = MutableLiveData<Boolean>()
     val loading = MutableLiveData<Boolean>()
 
     fun refresh() {
-        val d1 = DogBreed(
-            "1",
-            "Corgi 1",
-            "15 year", "breedGroup",
-            "brefFor",
-            "temperament",
-            ""
-        )
-        val d2 = DogBreed(
-            "2",
-            "Corgi 2",
-            "15 year", "breedGroup",
-            "brefFor",
-            "temperament",
-            ""
-        )
-        val d3 = DogBreed(
-            "3",
-            "Corgi 3",
-            "15 year", "breedGroup",
-            "brefFor",
-            "temperament",
-            ""
-        )
-        val d4 = DogBreed(
-            "4",
-            "Corgi 4",
-            "15 year", "breedGroup",
-            "brefFor",
-            "temperament",
-            ""
-        )
-        val d5 = DogBreed(
-            "5",
-            "Corgi 5",
-            "15 year", "breedGroup",
-            "brefFor",
-            "temperament",
-            ""
-        )
-        val d6 = DogBreed(
-            "6",
-            "Corgi 6",
-            "15 year", "breedGroup",
-            "brefFor",
-            "temperament",
-            ""
-        )
-        val d7 = DogBreed(
-            "7",
-            "Corgi 7",
-            "15 year", "breedGroup",
-            "brefFor",
-            "temperament",
-            ""
-        )
-        val d8 = DogBreed(
-            "8",
-            "Corgi 8",
-            "15 year", "breedGroup",
-            "brefFor",
-            "temperament",
-            ""
-        )
-        val d9 = DogBreed(
-            "9",
-            "Corgi 9",
-            "15 year", "breedGroup",
-            "brefFor",
-            "temperament",
-            ""
-        )
+        fetchFromRemote()
+    }
 
-        val dogList = arrayListOf(d1, d2, d3, d4, d5, d6, d7, d8, d9)
+    private fun fetchFromRemote() {
+        loading.value = true
+        disposable.add(
+            dogsService.getDogs()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<List<DogBreed>>() {
+                    override fun onSuccess(dogList: List<DogBreed>) {
+                        dogs.value = dogList
+                        dogsLoadError.value = false
+                        loading.value = false
+                    }
 
-        dogs.value = dogList
-        dogsLoadError.value = false
-        loading.value = false
+                    override fun onError(e: Throwable) {
+                        dogsLoadError.value = true
+                        loading.value = false
+                        e.printStackTrace()
+                    }
+                })
+        )
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposable.clear()
     }
 }

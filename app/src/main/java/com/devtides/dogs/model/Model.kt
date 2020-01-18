@@ -1,8 +1,6 @@
 package com.devtides.dogs.model
 
 import com.google.gson.annotations.SerializedName
-import io.reactivex.Single
-import retrofit2.http.GET
 
 data class DogBreed (
     @SerializedName("id")
