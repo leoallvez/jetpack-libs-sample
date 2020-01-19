@@ -27,10 +27,11 @@ class ListViewModel : ViewModel() {
         loading.value = true
         disposable.add(
             dogsService.getDogs()
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<List<DogBreed>>() {
+                .subscribeOn(Schedulers.newThread()) // make call in new background thread
+                .observeOn(AndroidSchedulers.mainThread()) // process the result on main thread
+                .subscribeWith(object : DisposableSingleObserver<List<DogBreed>>() { // Get Single
                     override fun onSuccess(dogList: List<DogBreed>) {
+                        //Set LiveData
                         dogs.value = dogList
                         dogsLoadError.value = false
                         loading.value = false
