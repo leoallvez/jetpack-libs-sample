@@ -2,10 +2,12 @@
 package com.devtides.dogs.viewmodel
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.devtides.dogs.model.DogBreed
 import com.devtides.dogs.model.DogDatabase
 import com.devtides.dogs.model.DogsApiService
+import com.devtides.dogs.util.SharedPreferencesHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -14,6 +16,8 @@ import kotlinx.coroutines.launch
 
 class ListViewModel(application: Application) : BaseViewModel(application) {
 
+    private var prefHelper= SharedPreferencesHelper(getApplication())
+    private var refreshTime = 5 * 60 * 1000 * 1000 * 1000L //five minutes in nano seconds
     private val dogsService = DogsApiService()
     private val disposable = CompositeDisposable()
 
@@ -22,7 +26,25 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
     val loading = MutableLiveData<Boolean>()
 
     fun refresh() {
+        val updateTime = prefHelper.getUpdateTime()
+        if(updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
+            fetchFromDatabase()
+        }else {
+            fetchFromRemote()
+        }
+    }
+
+    fun refreshFromDabaseCache() {
         fetchFromRemote()
+    }
+
+    private fun fetchFromDatabase() {
+        loading.value = true
+        launch {
+            val dogs =  DogDatabase(getApplication()).dogDao().getAllDogs()
+            dogsRetrieved(dogs)
+            Toast.makeText(getApplication(), "Dogs retrieved from database", Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun fetchFromRemote() {
@@ -34,7 +56,7 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
                 .subscribeWith(object : DisposableSingleObserver<List<DogBreed>>() { // Get Single
                     override fun onSuccess(dogList: List<DogBreed>) {
                        storeDogsLocally(dogList)
-
+                        Toast.makeText(getApplication(), "Dogs retrieved from endpoint", Toast.LENGTH_LONG).show()
                     }
 
                     override fun onError(e: Throwable) {
@@ -46,7 +68,7 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
         )
     }
 
-    private fun dogsRetrived(dogList: List<DogBreed>) {
+    private fun dogsRetrieved(dogList: List<DogBreed>) {
         //Set LiveData
         dogs.value = dogList
         dogsLoadError.value = false
@@ -54,6 +76,7 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
     }
 
     private fun storeDogsLocally(list: List<DogBreed>) {
+
         launch {
             val dao = DogDatabase(getApplication()).dogDao()
             dao.deleteAllDogs()
@@ -63,8 +86,9 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
                 list[i].uuid = result[i].toInt()
                 ++i
             }
-            dogsRetrived(list)
+            dogsRetrieved(list)
         }
+        prefHelper.saveUpdateTime(System.nanoTime())
     }
 
     override fun onCleared() {
