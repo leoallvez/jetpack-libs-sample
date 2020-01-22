@@ -1,8 +1,7 @@
 # Dogs Jetpack
-This sample demonstrates how to the use of the android [Jetpack library](https://developer.android.com/jetpack/) and practices in [Kotlin](https://kotlinlang.org/).
+This sample demonstrates how to the use the android [Jetpack library](https://developer.android.com/jetpack/) and practices in [Kotlin](https://kotlinlang.org/).
 
 ### Built With
-
   - [Navigation](https://developer.android.com/guide/navigation)
   - [Room](https://developer.android.com/training/data-storage/room)
   - [Data Binding](https://developer.android.com/topic/libraries/data-binding/)
