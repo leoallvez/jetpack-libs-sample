@@ -2,6 +2,7 @@
 package com.devtides.dogs.viewmodel
 
 import android.app.Application
+import android.os.Handler
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.devtides.dogs.model.DogBreed
@@ -18,6 +19,9 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
 
     private var prefHelper= SharedPreferencesHelper(getApplication())
     private var refreshTime = 5 * 60 * 1000 * 1000 * 1000L //five minutes in nano seconds
+    //private var updateDelayMillis : Long = 10 * 1000
+    //private var handler = Handler()
+    //private var runnable : Runnable? = null
     private val dogsService = DogsApiService()
     private val disposable = CompositeDisposable()
 
@@ -26,12 +30,20 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
     val loading = MutableLiveData<Boolean>()
 
     fun refresh() {
+        loading.value = true
         val updateTime = prefHelper.getUpdateTime()
         if(updateTime != null && updateTime != 0L && System.nanoTime() - updateTime < refreshTime) {
             fetchFromDatabase()
         }else {
             fetchFromRemote()
         }
+        /**
+        runnable = Runnable {
+            fetchFromRemote()
+            handler.postDelayed(runnable, updateDelayMillis)
+        }
+        handler.postDelayed(runnable, updateDelayMillis)
+        */
     }
 
     fun refreshFromDabaseCache() {
@@ -48,6 +60,7 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
     }
 
     private fun fetchFromRemote() {
+
         loading.value = true
         disposable.add(
             dogsService.getDogs()
@@ -55,7 +68,7 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
                 .observeOn(AndroidSchedulers.mainThread()) // process the result on main thread
                 .subscribeWith(object : DisposableSingleObserver<List<DogBreed>>() { // Get Single
                     override fun onSuccess(dogList: List<DogBreed>) {
-                       storeDogsLocally(dogList)
+                        storeDogsLocally(dogList)
                         Toast.makeText(getApplication(), "Dogs retrieved from endpoint", Toast.LENGTH_LONG).show()
                     }
 
