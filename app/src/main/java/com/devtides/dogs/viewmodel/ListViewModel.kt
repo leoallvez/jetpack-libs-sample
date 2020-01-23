@@ -2,18 +2,22 @@
 package com.devtides.dogs.viewmodel
 
 import android.app.Application
-import android.os.Handler
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.devtides.dogs.model.DogBreed
 import com.devtides.dogs.model.DogDatabase
 import com.devtides.dogs.model.DogsApiService
 import com.devtides.dogs.util.SharedPreferencesHelper
+import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
+import org.reactivestreams.Subscription
+import java.util.concurrent.TimeUnit
+
 
 class ListViewModel(application: Application) : BaseViewModel(application) {
 
@@ -37,13 +41,16 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
         }else {
             fetchFromRemote()
         }
-        /**
-        runnable = Runnable {
-            fetchFromRemote()
-            handler.postDelayed(runnable, updateDelayMillis)
-        }
-        handler.postDelayed(runnable, updateDelayMillis)
-        */
+
+
+        disposable.add(Observable.interval(
+            5000, 5000,
+            TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                fetchFromRemote()
+            })
     }
 
     fun refreshFromDabaseCache() {
