@@ -60,7 +60,7 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
         val cachePreferences = prefHelper.getCacheDuration()
         try {
             val cachePreferenceInt = cachePreferences?.toInt() ?: 5 * 60
-            refreshTime = cachePreferenceInt?.times(1000 * 1000 * 1000L )
+            refreshTime = cachePreferenceInt.times(1000 * 1000 * 1000L )
         } catch (e: NumberFormatException) {
             e.printStackTrace()
         }
