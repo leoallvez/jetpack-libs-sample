@@ -12,6 +12,9 @@
             app:destination="@id/detailFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_listFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -27,4 +30,8 @@
             android:defaultValue="0"
             app:argType="integer"/>
     </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.devtides.dogs.view.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>
