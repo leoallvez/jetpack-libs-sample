@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.devtides.dogs.model.DogBreed
 import com.devtides.dogs.model.DogDatabase
 import com.devtides.dogs.model.DogsApiService
+import com.devtides.dogs.util.NotificationHelper
 import com.devtides.dogs.util.SharedPreferencesHelper
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -42,7 +43,7 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
             fetchFromRemote()
         }
 
-
+        /**
         disposable.add(Observable.interval(
             5000, 5000,
             TimeUnit.MILLISECONDS)
@@ -51,16 +52,17 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
             .subscribe {
                 fetchFromRemote()
             })
+        **/
     }
 
-    fun refreshFromDabaseCache() {
+    fun refreshFromDatabaseCache() {
         fetchFromRemote()
     }
 
     private fun fetchFromDatabase() {
         loading.value = true
         launch {
-            val dogs =  DogDatabase(getApplication()).dogDao().getAllDogs()
+            val dogs = DogDatabase(getApplication()).dogDao().getAllDogs()
             dogsRetrieved(dogs)
             Toast.makeText(getApplication(), "Dogs retrieved from database", Toast.LENGTH_LONG).show()
         }
@@ -77,6 +79,7 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
                     override fun onSuccess(dogList: List<DogBreed>) {
                         storeDogsLocally(dogList)
                         Toast.makeText(getApplication(), "Dogs retrieved from endpoint", Toast.LENGTH_LONG).show()
+                        NotificationHelper(getApplication()).createNotification()
                     }
 
                     override fun onError(e: Throwable) {
