@@ -1,7 +1,16 @@
 # Dogs Jetpack
-This sample demonstrates how to the use the android [Jetpack library](https://developer.android.com/jetpack/) and practices in [Kotlin](https://kotlinlang.org/).
+> This sample demonstrates how to the use the android [Jetpack library](https://developer.android.com/jetpack/) and practices in [Kotlin](https://kotlinlang.org/) and the [MVVM](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel) architecture standard.
+
+> The app makes a request and consumes the data with [Retrofit](https://square.github.io/retrofit/), saving it in a local database with [Room](https://developer.android.com/training/data-storage/room) ORM, the concept of reactive programming with jetpack [Data Binding](https://developer.android.com/topic/libraries/data-binding/) and [Live Data](https://developer.android.com/topic/libraries/architecture/livedata) was used
+
+## Installation
+Clone this repository and import into **Android Studio**
+```bash
+git clone https://github.com/leoallvez/dogs-sample-jetpack.git/
+```
 
 ### Built With
+  Jetpack
   - [Navigation](https://developer.android.com/guide/navigation)
   - [Room](https://developer.android.com/training/data-storage/room)
   - [Data Binding](https://developer.android.com/topic/libraries/data-binding/)
@@ -10,5 +19,18 @@ This sample demonstrates how to the use the android [Jetpack library](https://de
   - [Live Data](https://developer.android.com/topic/libraries/architecture/livedata)
   - [Multidex](https://developer.android.com/studio/build/multidex?hl=en)
   - [Retrofit](https://square.github.io/retrofit/)
+  - [Settings](https://developer.android.com/guide/topics/ui/settings?hl=en)
+ 
+  Third party library
   - [RxJava](https://github.com/ReactiveX/RxJava)
   - [Glide](https://github.com/bumptech/glide)
+  
+## Contributing
+
+1. Fork it
+2. Create your feature branch (git checkout -b my-new-feature)
+3. Commit your changes (git commit -m 'Add some feature')
+4. Run the linter (ruby lint.rb').
+5. Push your branch (git push origin my-new-feature)
+6. Create a new Pull Request
+
