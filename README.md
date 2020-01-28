@@ -1,7 +1,7 @@
 # Basic Jetpack Sample
 > This sample demonstrates how to the use the android [Jetpack library](https://developer.android.com/jetpack/) and practices in [Kotlin](https://kotlinlang.org/) and the [MVVM](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel) architecture standard.
 
-> The app makes a request and consumes the data with [Retrofit](https://square.github.io/retrofit/), saving it in a local database with [Room](https://developer.android.com/training/data-storage/room) ORM, the concept of reactive programming with jetpack [Data Binding](https://developer.android.com/topic/libraries/data-binding/) and [Live Data](https://developer.android.com/topic/libraries/architecture/livedata) was used
+> The app makes a request and consumes the data with [Retrofit](https://square.github.io/retrofit/), saving it in a local database with [Room](https://developer.android.com/training/data-storage/room) ORM, the concept of reactive programming with jetpack [Data Binding](https://developer.android.com/topic/libraries/data-binding/), [Live Data](https://developer.android.com/topic/libraries/architecture/livedata) and [RxJava](https://github.com/ReactiveX/RxJava) was used
 
 ## Installation
 Clone this repository and import into **Android Studio**
