@@ -8,7 +8,7 @@
 ## Installation
 Clone this repository and import into **[Android Studio](https://developer.android.com/studio)**
 ```bash
-git clone https://github.com/leoallvez/dogs-sample-jetpack.git/
+git clone hhttps://github.com/leoallvez/basic-sample-jetpack.git
 ```
 
 ### Built With
