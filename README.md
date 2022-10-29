@@ -1,4 +1,4 @@
-# Basic Jetpack Sample
+# Jetpack Libraries Sample
 > This sample demonstrates how to the use the android [Jetpack library](https://developer.android.com/jetpack/) and practices in [Kotlin](https://kotlinlang.org/) and the [MVVM](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93viewmodel) architecture standard.
 
 ![MVVM](img/MVVMPattern.png)
